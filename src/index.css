@@ -1,5 +1,17 @@
-body {
+/**
+https://hookagency.com/blog/website-color-schemes-2020/
+Ice Cold: #a0d2eb
+Freeze Purple: #e5eaf5
+Medium Purple: #d0bdf4
+Purple Pain: #8458B3
+Heavy Purple: #494d5f
+*/
+
+
+body, html {
   margin: 0;
+  padding: 0;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -7,7 +19,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.uk-button-primary {
+  background-color: #8458B3 !important;
+}
+
+.uk-button-primary:disabled {
+  background-color: #bb90e8 !important;
+  color: #ddd !important;
 }

@@ -1,0 +1,37 @@
+.player-selector-container {
+    padding: 1rem 0.5rem;
+}
+
+.player-selector {
+    display: flex;
+    column-gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.player-selector-divider {
+    min-height: 100%;
+    border-right: 1px solid #ccc;
+}
+
+.player-selector-no-players {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-selector-new-player {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.player-selector-new-player-actions {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.main-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
