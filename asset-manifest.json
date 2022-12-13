@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Compander/static/css/main.918e25ed.css",
+    "main.js": "/Compander/static/js/main.ce67d60b.js",
+    "index.html": "/Compander/index.html",
+    "main.918e25ed.css.map": "/Compander/static/css/main.918e25ed.css.map",
+    "main.ce67d60b.js.map": "/Compander/static/js/main.ce67d60b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.918e25ed.css",
+    "static/js/main.ce67d60b.js"
+  ]
+}
