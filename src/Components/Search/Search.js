@@ -1,6 +1,6 @@
 import SearchResultCard from "./SearchResultCard";
 import './search.css';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MtgClient } from '../../mtg';
 
 const SearchingState = {
@@ -13,6 +13,7 @@ const Search = ({ onCardSelected, onClose }) => {
     const [results, setResults] = useState([]);
     const [searchingState, setSearchingState] = useState(SearchingState.NOT_STARTED);
     const [searchQuery, setSearchQuery] = useState('');
+    const inputRef = useRef();
     
     var mtgClient = new MtgClient();
 
@@ -23,6 +24,7 @@ const Search = ({ onCardSelected, onClose }) => {
     function onInputKeyDown(e) {
         if (e.key === 'Enter') {
             search();
+            inputRef.current.blur();
         }
     }
 
@@ -32,6 +34,8 @@ const Search = ({ onCardSelected, onClose }) => {
         setResults(results);
         setSearchingState(SearchingState.DONE);
     }
+
+    const onClearClick = () => setSearchQuery('');
 
     const notSearchedInfo = (
         <div className="search-info-container">
@@ -69,13 +73,20 @@ const Search = ({ onCardSelected, onClose }) => {
     return (
         <div className="search-container">
             <div className="search-input-container">
-                <input 
+                <input
+                    ref={ inputRef }
                     autoFocus
+                    value={ searchQuery || '' }
                     className="uk-input"
                     type="text"
                     placeholder="Search card"
                     onChange={ onInputChange }
                     onKeyDown={ onInputKeyDown }/>
+                <button 
+                    className="uk-button uk-button-default"
+                    onClick={ onClearClick }>
+                    Clear
+                </button>
             </div>
             { searchingState === SearchingState.NOT_STARTED ? notSearchedInfo : null }
             { searchingState === SearchingState.SEARCHING ? searchingInfo : null }
