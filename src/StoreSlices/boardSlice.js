@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const emptyInitialState = { // eslint-disable-line no-unused-vars
     players: [],
@@ -108,15 +108,32 @@ function createNewBoard(player) {
     }
 }
 
+function persist(state) {
+    localStorage.setItem('state', JSON.stringify(state));
+}
+
+function load() {
+    var state = localStorage.getItem('state');
+    
+    if (state === null) return emptyInitialState;
+
+    try {
+        return JSON.parse(state);
+    } catch (e) {
+        return emptyInitialState;
+    }
+}
+
 export const boardSlice = createSlice({
     name: 'board',
-    initialState: testInitialState,
+    initialState: load(),
     reducers: {
         addPlayer: (state, action) => {
             var player = action.payload;
             state.players.push(player);
             state.boards.push(createNewBoard(player));
             state.activePlayer = player;
+            persist(current(state));
             return state;
         },
         removePlayer: (state, action) => {
@@ -134,11 +151,14 @@ export const boardSlice = createSlice({
                 state.activePlayer = null;
             }
 
+            persist(current(state));
+
             return state;
         },
         setActivePlayer: (state, action) => {
             var player = action.payload;
             state.activePlayer = player;
+            persist(current(state));
             return state;
         },
         addCard: (state, action) => {
@@ -146,6 +166,7 @@ export const boardSlice = createSlice({
             // TODO: What if board is null
             var targetBoard = state.boards.filter(board => board.player === player)[0];
             targetBoard.cards.push(card);
+            persist(current(state));
             return state;
         },
         removeCard: (state, action) => {
@@ -153,6 +174,7 @@ export const boardSlice = createSlice({
             // TODO: What if board is null
             var targetBoard = state.boards.filter(board => board.player === player)[0];
             targetBoard.cards = targetBoard.cards.filter(c => c.id !== card.id);
+            persist(current(state));
             return state;
         },
         addCommander: (state, action) => {
@@ -160,6 +182,7 @@ export const boardSlice = createSlice({
             // TODO: What if board is null
             var targetBoard = state.boards.filter(board => board.player === player)[0];
             targetBoard.commanders.push(card);
+            persist(current(state));
             return state;
         },
         removeCommander: (state, action) => {
@@ -167,6 +190,7 @@ export const boardSlice = createSlice({
             // TODO: What if board is null
             var targetBoard = state.boards.filter(board => board.player === player)[0];
             targetBoard.commanders = targetBoard.commanders.filter(c => c.id !== card.id);
+            persist(current(state));
             return state;
         },
         switchFace: (state, action) => {
@@ -176,6 +200,7 @@ export const boardSlice = createSlice({
             var targetBoard = state.boards.filter(board => board.player === player)[0];
             var targetCard = targetBoard.cards.filter(c => c.id === card.id)[0];
             targetCard.activeFace = faceIndex;
+            persist(current(state));
             return state;
         }
     }
