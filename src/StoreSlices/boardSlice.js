@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export const Zones = {
+    Board: 'board',
+    Graveyard: 'graveyard',
+    Exile: 'exile'
+};
+
 const emptyInitialState = { // eslint-disable-line no-unused-vars
     players: [],
     activePlayer: null,
@@ -26,7 +32,8 @@ const testInitialState = { // eslint-disable-line no-unused-vars
                             }
                         }
                     ],
-                    activeFace: 0
+                    activeFace: 0,
+                    zone: Zones.Board
                 },
             ],
             "cards": [
@@ -43,7 +50,8 @@ const testInitialState = { // eslint-disable-line no-unused-vars
                             }
                         }
                     ],
-                    activeFace: 0
+                    activeFace: 0,
+                    zone: Zones.Board
                 },
                 {
                     "id": "49341a2f-18c8-4f89-a83f-9676cdaed886",
@@ -58,7 +66,8 @@ const testInitialState = { // eslint-disable-line no-unused-vars
                             }
                         }
                     ],
-                    activeFace: 0
+                    activeFace: 0,
+                    zone: Zones.Board
                 },
                 {
                     "id": "df901fdc-8672-44f5-ade5-7c4e0b5c5d81",
@@ -73,7 +82,8 @@ const testInitialState = { // eslint-disable-line no-unused-vars
                             }
                         }
                     ],
-                    activeFace: 0
+                    activeFace: 0,
+                    zone: Zones.Board
                 },
                 {
                     "id": "f851d74e-90ad-417f-8372-8437d2d68b0d",
@@ -88,7 +98,8 @@ const testInitialState = { // eslint-disable-line no-unused-vars
                             }
                         }
                     ],
-                    activeFace: 0
+                    activeFace: 0,
+                    zone: Zones.Board
                 }
             ]
         },
@@ -177,6 +188,15 @@ export const boardSlice = createSlice({
             var targetCard = targetBoard.cards.filter(c => c.id === card.id)[0];
             targetCard.activeFace = faceIndex;
             return state;
+        },
+        moveToZone: (state, action) => {
+            var { player, card, zone } = action.payload;
+            // TODO: Assert targetBoard not null
+            // TODO: Assert targetCard not null
+            var targetBoard = state.boards.filter(board => board.player === player)[0];
+            var targetCard = targetBoard.cards.filter(c => c.id === card.id)[0];
+            targetCard.zone = zone;
+            return state;
         }
     }
 });
@@ -189,6 +209,7 @@ export const {
     removeCard,
     addCommander,
     removeCommander,
-    switchFace
+    switchFace,
+    moveToZone
 } = boardSlice.actions;
 export default boardSlice.reducer;

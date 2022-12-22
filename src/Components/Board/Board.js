@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import Card from './Card';
 import "./board.css";
 import { useDispatch } from 'react-redux';
-import { removeCommander, removeCard } from '../../StoreSlices/boardSlice';
+import { removeCommander, removeCard, Zones } from '../../StoreSlices/boardSlice';
 
 const Board = () => {
     const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Board = () => {
             onRemove={ () => onRemoveCommander(card) }/>
     ));
 
-    const cards = board.cards.map(card => (
+    const cards = board.cards.filter(card => card.zone == Zones.Board).map(card => (
         <Card
             key={ card.id }
             card={ card }
@@ -42,6 +42,17 @@ const Board = () => {
 
     return (
         <div className='main-container'>
+            <div>
+                <ul uk-tab="true">
+                    <li><a href='#'>item 1</a></li>
+                    <li><a href='#'>item 2</a></li>
+                </ul>
+                <ul className='uk-switcher uk-margin'>
+                    <li>test</li>
+                    <li>test 2</li>
+                </ul>
+            </div>
+
             <h2>Cards</h2>
             <div className='board-container'>
                 { cards }

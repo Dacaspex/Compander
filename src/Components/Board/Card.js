@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { removeCard, switchFace } from "../../StoreSlices/boardSlice";
+import { moveToZone, removeCard, switchFace, Zones } from "../../StoreSlices/boardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ActionMenu from '../ActionMenu/ActionMenu';
 
@@ -9,6 +9,7 @@ const Card = ({ card, onRemove }) => {
 
     const [fullSizeVisible, setFullSizeVisible] = useState(false);
     const [editMenuOpen, setEditMenuOpen] = useState(false);
+    const [zoneMenuOpen, setZoneMenuOpen] = useState(false);
 
     const onOpenView = () => setFullSizeVisible(true);
     const onCloseView = () => setFullSizeVisible(false);
@@ -24,6 +25,19 @@ const Card = ({ card, onRemove }) => {
             player: activePlayer,
             card: card,
             faceIndex: (card.activeFace + 1) % 2
+        }));
+    }
+    const onMoveToZoneClick = () => {
+        setEditMenuOpen(false);
+        setZoneMenuOpen(true);
+    }
+    const onZoneMenuCancel = () => setZoneMenuOpen(false);
+    const onMoveCardToZone = zone => {
+        setZoneMenuOpen(false);
+        dispatch(moveToZone({
+            player: activePlayer,
+            card: card,
+            zone: zone
         }));
     }
 
@@ -49,11 +63,31 @@ const Card = ({ card, onRemove }) => {
 
     const editMenuJsx = (
         <ActionMenu title="Edit card" subTitle={ card.name } onCancel={ onEditMenuCancel }>
-            { isMultiFace ? flipFaceButtonJsx : null }
             <button
                 className="uk-button uk-button-danger uk-width-1-1 uk-margin-small-bottom"
                 onClick={ onRemoveClick }>
                 Remove
+            </button>
+            { isMultiFace ? flipFaceButtonJsx : null }
+            <button
+                className="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom"
+                onClick={ onMoveToZoneClick }>
+                Move to zone
+            </button>
+        </ActionMenu>
+    );
+
+    const zoneMenuJsx = (
+        <ActionMenu title="Move card to zone" subTitle={ card.name } onCancel={ onZoneMenuCancel }>
+            <button
+                className="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom"
+                onClick={ () => onMoveCardToZone(Zones.Exile) }>
+                Exile
+            </button>
+            <button
+                className="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom"
+                onClick={ () => onMoveCardToZone(Zones.Graveyard) }>
+                Graveyard
             </button>
         </ActionMenu>
     );
@@ -75,6 +109,7 @@ const Card = ({ card, onRemove }) => {
             </div>
             { fullSizeVisible ? fullSizeView : null }
             { editMenuOpen ? editMenuJsx : null }
+            { zoneMenuOpen ? zoneMenuJsx : null }
         </>
     );
 };
